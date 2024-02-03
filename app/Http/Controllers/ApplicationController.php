@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetApplicationGivenBatchId;
 use App\Http\Resources\AllApplicationResource;
 use App\Http\Resources\BatchesResource;
 use App\Models\Application;
@@ -25,6 +26,15 @@ class ApplicationController extends Controller
         $config = DB::table('t_config')->select('_current_session_FK')->first();
         $all_applications = Application::where('session_id_FK', $config->_current_session_FK)->get();
         // return $all_applications;
+        return AllApplicationResource::collection($all_applications);
+    }
+
+
+    public function get_application_given_screen_batch_id(GetApplicationGivenBatchId $request){
+        $request->validated($request->all()); 
+        $config = DB::table('t_config')->select('_current_session_FK')->first();
+        $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
+        ->where('id_of_screening_schedule', $request->batchId)->get();
         return AllApplicationResource::collection($all_applications);
     }
 }

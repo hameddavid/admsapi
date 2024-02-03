@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('get-applicants-in-session', [ApplicantController::class, 'get_all_applicants_in_session']);
 Route::get('get-screening-schedule-in-session', [ApplicationController::class, 'get_screening_schedule_in_session']);
 Route::get('get-all-application-in-session', [ApplicationController::class, 'get_all_application_in_session']);
+Route::get('get-application-given-screen-batch-id', [ApplicationController::class, 'get_application_given_screen_batch_id']);
+
+
 Route::post('load-putm-scores-bulk', [AdminController::class, 'load_putm_scores_bulk']);
 
 
