@@ -11,4 +11,5 @@ class Application extends Model
 
     protected $table = 't_applications';
     protected $primaryKey = 'application_id';
+    public $timestamps = false;
 }

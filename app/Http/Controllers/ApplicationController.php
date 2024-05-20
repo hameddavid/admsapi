@@ -16,8 +16,11 @@ class ApplicationController extends Controller
 
         $config = DB::table('t_config')->select('_current_session_FK')->first();
         $subApp = DB::table('t_applications')->select('id_of_screening_schedule')
-        ->distinct()->where('session_id_FK',$config->_current_session_FK)->pluck('id_of_screening_schedule');
-        return BatchesResource::collection(DB::table('t_screening_schedules')->select('*')->whereIn('t_screening_schedules.id', $subApp)->orderBy('t_screening_schedules.id')->get());
+        ->distinct()->where('session_id_FK',$config->_current_session_FK)
+        ->pluck('id_of_screening_schedule');
+        return BatchesResource::collection(DB::table('t_screening_schedules')->select('*')
+        ->whereIn('t_screening_schedules.id', $subApp)
+        ->orderBy('t_screening_schedules.id')->get());
     }
 
 
