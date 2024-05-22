@@ -16,6 +16,7 @@ class AdminController extends Controller
     //    ini_set('memory_limit', '-1');
     // try {
         $path1 = $request->file('putme_scores')->store('temp'); 
+        return $path1;
         $path = storage_path('app').'/'.$path1; 
         // $excelData = Excel::toCollection(null, $request->file('putme_scores'));
         $excelData = Excel::toCollection(null, $path);
