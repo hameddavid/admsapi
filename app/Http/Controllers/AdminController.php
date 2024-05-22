@@ -14,7 +14,7 @@ class AdminController extends Controller
 
     public function load_putm_scores_bulk(Request $request){
     //    ini_set('memory_limit', '-1');
-    try {
+    // try {
         $excelData = Excel::toCollection(null, $request->file('putme_scores'));
         if (!empty($excelData) && $excelData->count() > 0) {
             $failedRecords = [];
@@ -72,9 +72,9 @@ class AdminController extends Controller
         
         }
         return  response(['status'=>'failed','message'=>'Empty excel file sent']);
-    } catch (\Throwable $th) {
-        return  response(['status'=>'failed','message'=>'Error with excel file sent']);
-    }
+    // } catch (\Throwable $th) {
+    //     return  response(['status'=>'failed','message'=>'Error with excel file sent']);
+    // }
    
        
     }
