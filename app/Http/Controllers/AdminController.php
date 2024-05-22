@@ -13,6 +13,10 @@ class AdminController extends Controller
     
 
     public function load_putm_scores_bulk(Request $request){
+
+        $path = $request->file('putme_scores')->getRealPath();
+        $data = Excel::toCollection(null, $request->file('putme_scores'));
+        return $data;
     //    ini_set('memory_limit', '-1');
     // try {
         // $path1 = $request->file('putme_scores')->store('temp'); 
