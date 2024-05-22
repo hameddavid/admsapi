@@ -14,9 +14,9 @@ class AdminController extends Controller
 
     public function load_putm_scores_bulk(Request $request){
 
-        $path = $request->file('putme_scores')->getRealPath();
-        $data = Excel::toCollection(null, $request->file('putme_scores'));
-        return $data;
+        
+        // $data = Excel::toCollection(null, $request->file('putme_scores'));
+        // return $data;
     //    ini_set('memory_limit', '-1');
     // try {
         // $path1 = $request->file('putme_scores')->store('temp'); 
@@ -26,10 +26,9 @@ class AdminController extends Controller
         // $readerType = Excel::readerTypeByFormat($format); // Replace $format with 'Xlsx', 'Xlsm', etc. based on your file extension
         // $excelData = Excel::toCollection($readerType, $request->file('putme_scores'));
         // $excelData = Excel::toCollection(null, $request->file('putme_scores'));
-        $readerType = \Maatwebsite\Excel\Excel::XLSX;// Assuming .xlsx format
-        $uploadedFile = $request->file('putme_scores');
-        $excelData = Excel::toCollection(\Maatwebsite\Excel\Excel::XLSX, $uploadedFile);
-        // $excelData = Excel::toCollection(null, $path);
+        //$readerType = \Maatwebsite\Excel\Excel::XLSX;// Assuming .xlsx format
+        // $uploadedFile = $request->file('putme_scores');
+        $excelData = Excel::toCollection(null, $request->file('putme_scores'));
         if (!empty($excelData) && $excelData->count() > 0) {
             $failedRecords = [];
             // Skip header row (assuming first row is header)
