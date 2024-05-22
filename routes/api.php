@@ -23,7 +23,7 @@ Route::get('get-all-application-in-session', [ApplicationController::class, 'get
 Route::get('get-application-given-screen-batch-id', [ApplicationController::class, 'get_application_given_screen_batch_id']);
 
 
-Route::post('load-putm-scores-bulk', [AdminController::class, 'load_putm_scores_bulk']);
+Route::any('load-putm-scores-bulk', [AdminController::class, 'load_putm_scores_bulk']);
 
 
 
