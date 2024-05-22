@@ -24,7 +24,7 @@ class AdminController extends Controller
         // $excelData = Excel::toCollection(null, $request->file('putme_scores'));
         $readerType = \Maatwebsite\Excel\Excel::XLSX;// Assuming .xlsx format
         $uploadedFile = $request->file('putme_scores');
-        $excelData = Excel::toCollection($readerType, $uploadedFile);
+        $excelData = Excel::toCollection(\Maatwebsite\Excel\Excel::XLSX, $uploadedFile);
         // $excelData = Excel::toCollection(null, $path);
         if (!empty($excelData) && $excelData->count() > 0) {
             $failedRecords = [];
