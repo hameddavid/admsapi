@@ -6,7 +6,7 @@ use App\Imports\LoadPUTMEScore;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpParser\Node\Expr\Cast\String_;
+
 
 class AdminController extends Controller
 {
@@ -15,7 +15,10 @@ class AdminController extends Controller
     public function load_putm_scores_bulk(Request $request){
     //    ini_set('memory_limit', '-1');
     // try {
-        $excelData = Excel::toCollection(null, $request->file('putme_scores'));
+        $path1 = $request->file('putme_scores')->store('temp'); 
+        $path = storage_path('app').'/'.$path1; 
+        // $excelData = Excel::toCollection(null, $request->file('putme_scores'));
+        $excelData = Excel::toCollection(null, $path);
         if (!empty($excelData) && $excelData->count() > 0) {
             $failedRecords = [];
             // Skip header row (assuming first row is header)
