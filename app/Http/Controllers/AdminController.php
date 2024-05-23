@@ -28,7 +28,10 @@ class AdminController extends Controller
         // $excelData = Excel::toCollection(null, $request->file('putme_scores'));
         //$readerType = \Maatwebsite\Excel\Excel::XLSX;// Assuming .xlsx format
         // $uploadedFile = $request->file('putme_scores');
-        $excelData = Excel::toCollection(null, $request->file('putme_scores'));
+        $excelData = Excel::toCollection(new LoadPUTMEScore, $request->file('putme_scores'));
+         
+        // $data = $excelData[0]->skip(1);
+        // return $data;
         if (!empty($excelData) && $excelData->count() > 0) {
             $failedRecords = [];
             // Skip header row (assuming first row is header)
