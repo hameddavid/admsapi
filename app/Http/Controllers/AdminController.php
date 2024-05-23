@@ -14,24 +14,11 @@ class AdminController extends Controller
 
     public function load_putm_scores_bulk(Request $request){
 
-        
-        // $data = Excel::toCollection(null, $request->file('putme_scores'));
-        // return $data;
     //    ini_set('memory_limit', '-1');
     // try {
-        // $path1 = $request->file('putme_scores')->store('temp'); 
-        // return $path1;
-        // $path = storage_path('app').'/'.$path1; 
-        // ,ExcelExcel::XLSX
-        // $readerType = Excel::readerTypeByFormat($format); // Replace $format with 'Xlsx', 'Xlsm', etc. based on your file extension
-        // $excelData = Excel::toCollection($readerType, $request->file('putme_scores'));
-        // $excelData = Excel::toCollection(null, $request->file('putme_scores'));
-        //$readerType = \Maatwebsite\Excel\Excel::XLSX;// Assuming .xlsx format
-        // $uploadedFile = $request->file('putme_scores');
+       
+       
         $excelData = Excel::toCollection(new LoadPUTMEScore, $request->file('putme_scores'));
-         
-        // $data = $excelData[0]->skip(1);
-        // return $data;
         if (!empty($excelData) && $excelData->count() > 0) {
             $failedRecords = [];
             // Skip header row (assuming first row is header)
