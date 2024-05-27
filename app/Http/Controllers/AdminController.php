@@ -6,7 +6,6 @@ use App\Imports\LoadPUTMEScore;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Concerns\FromExtension;
 
 
 class AdminController extends Controller
@@ -21,7 +20,7 @@ class AdminController extends Controller
     // try {0
        
        
-        // $excelData = Excel::toCollection(new LoadPUTMEScore, $request->file('putme_scores'), FromExtension::XLSX);
+        return 'Working...';
         $excelData = Excel::toCollection(new LoadPUTMEScore, $request->file('putme_scores'), null, \Maatwebsite\Excel\Excel::XLSX);
         return $excelData;
         if (!empty($excelData) && $excelData->count() > 0) {
