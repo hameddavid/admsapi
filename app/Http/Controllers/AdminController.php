@@ -20,7 +20,6 @@ class AdminController extends Controller
     // try {0
        
        
-        return 'Working...';
         $excelData = Excel::toCollection(new LoadPUTMEScore, $request->file('putme_scores'), null, \Maatwebsite\Excel\Excel::XLSX);
         return $excelData;
         if (!empty($excelData) && $excelData->count() > 0) {
