@@ -6,6 +6,7 @@ use App\Imports\LoadPUTMEScore;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromExtension;
 
 
 class AdminController extends Controller
@@ -13,12 +14,16 @@ class AdminController extends Controller
     
 
     public function load_putm_scores_bulk(Request $request){
-
+        
+        $request->validate(['putme_scores' => 'required|file|mimes:xlsx,csv', ]);
+    
     //    ini_set('memory_limit', '-1');
-    // try {
+    // try {0
        
        
-        $excelData = Excel::toCollection(new LoadPUTMEScore, $request->file('putme_scores'));
+        // $excelData = Excel::toCollection(new LoadPUTMEScore, $request->file('putme_scores'), FromExtension::XLSX);
+        $excelData = Excel::toCollection(new LoadPUTMEScore, $request->file('putme_scores'), null, \Maatwebsite\Excel\Excel::XLSX);
+        return $excelData;
         if (!empty($excelData) && $excelData->count() > 0) {
             $failedRecords = [];
             // Skip header row (assuming first row is header)
@@ -95,4 +100,46 @@ class AdminController extends Controller
             return "No match found";
         }
     }
+
+
+
+    public function update_applicant_putm_score(Request $request){
+
+        $application = Application::where('application_id', $request->app_id)->first();
+        if($application){
+            //
+            //     $application->last_updated_date = date('Y-m-d H:i:s');
+            // //     // Update each column based on different conditions
+            //         if (trim($row1[0]) == trim($application->post_ume_subject1)) {
+            //             $application->post_ume_subject1_score = $formattedScore;
+            //         }
+        
+            //         elseif (trim($row1[0]) == trim($application->post_ume_subject2)) {
+            //             $application->post_ume_subject2_score = $formattedScore;
+            //         }
+    
+            //         elseif (trim($row1[0]) == trim($application->post_ume_subject3)) {
+            //             $application->post_ume_subject3_score = $formattedScore;
+            //         }
+                    
+            //         elseif (trim($row1[0]) == trim($application->post_ume_subject4)) {
+            //             $application->post_ume_subject4_score = $formattedScore;
+            //         }
+               // Save the changes to the database
+                    $application->save();
+        }
+        else{
+            return  response(['status'=>'failed','message'=>'No application found']);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }
