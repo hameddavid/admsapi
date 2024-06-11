@@ -6,11 +6,34 @@ use App\Imports\LoadPUTMEScore;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Http;
 
 
 class AdminController extends Controller
 {
     
+
+    public function send_admission_status_to_server(Request $request){
+        
+        $http_req = Http::post('https://adms.run.edu.ng/codebehind/front_end_processor?offer_admission=112233',[
+            'request_type' => 'single',
+            'date' => '01-11-2019'
+        ]);
+         if($http_req->successful()){
+           return $http_req;
+        }
+        
+        // $response = Http::post('http://127.0.0.1:1111/api/register', [
+        //     'name' => $validated['name'],
+        //     'email' => $validated['email'],
+        //     'password' => $validated['password'],
+        // ]);
+
+
+        // if ($response->successful()) {
+            // Registration was successful
+
+    }
 
     public function load_putm_scores_bulk(Request $request){
         

@@ -25,6 +25,8 @@ Route::get('get-all-application-in-session', [ApplicationController::class, 'get
 Route::get('get-application-given-screen-batch-id', [ApplicationController::class, 'get_application_given_screen_batch_id']);
 Route::get('get-programmes', [HelperController::class, 'get_available_programmes_with_properties']); //
 Route::any('load-putm-scores-bulk', [AdminController::class, 'load_putm_scores_bulk']);
+Route::post('send-adms-status', [AdminController::class, 'send_admission_status_to_server']);
+
 
 
 
