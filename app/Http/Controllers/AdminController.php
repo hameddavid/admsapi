@@ -13,6 +13,34 @@ use Illuminate\Support\Facades\Validator;
 class AdminController extends Controller
 {
     
+    public function update_applicant_scores(Request $request){
+
+        $validate = Validator::make($request->all(),[
+            'application_id'=> 'required', 'post_ume_subject1_score'=> 'required', 'post_ume_subject2_score'=> 'required', 
+            'post_ume_subject3_score'=> 'required', 'post_ume_subject4_score'=>'required',
+        ]);
+
+        if($validate->fails()){
+            return response()->json(['status_code'=>400, 'msg'=>'All fields are required with the following names: 
+            application_id,post_ume_subject1_score,post_ume_subject2_score,post_ume_subject3_score,post_ume_subject4_score']);
+        }
+
+        $application = Application::where('application_id', $request->application_id)->first();
+        if($application){
+            $application->post_ume_subject1_score = $request->post_ume_subject1_score;
+            $application->post_ume_subject2_score = $request->post_ume_subject2_score;
+            $application->post_ume_subject3_score = $request->post_ume_subject3_score;
+            $application->post_ume_subject4_score = $request->post_ume_subject4_score;
+            $application->avg_ume_pume_score = $this->cal_putme_avg($application->ume_score, $request->post_ume_subject1_score, $request->post_ume_subject2_score,$request->post_ume_subject3_score,$request->post_ume_subject4_score);
+            $application->save();
+            return  response(['status'=>'success','message'=>'Scores updated successfully', 'data' => '']);
+            
+        }
+        else{
+            return  response(['status'=>'failed','message'=>'application with id: ${$request->application_id} not found', 'data' => '']);
+        }
+
+    }
 
     public function send_admission_status_to_server(Request $request){
 
@@ -73,6 +101,7 @@ class AdminController extends Controller
                             $get_filtered_data = $chunk_data[$i]->filter(function($item) use ($application){
                                return  $item[1] === $application->application_id;
                             });
+                            $score1 = $score2 = $score3 = $score4 = 0;
                                 foreach ($get_filtered_data as $key => $row1)
                                 {
                                 $formattedScore = $this->format_score_from_excel_upload($row1[4]);
@@ -80,21 +109,28 @@ class AdminController extends Controller
                         //     // Update each column based on different conditions
                                 if (trim($row1[0]) == trim($application->post_ume_subject1)) {
                                     $application->post_ume_subject1_score = $formattedScore;
+                                    $score1 = $formattedScore;
                                 }
                     
                                 elseif (trim($row1[0]) == trim($application->post_ume_subject2)) {
                                     $application->post_ume_subject2_score = $formattedScore;
+                                    $score2 = $formattedScore;
                                 }
                 
                                 elseif (trim($row1[0]) == trim($application->post_ume_subject3)) {
                                     $application->post_ume_subject3_score = $formattedScore;
+                                    $score3 = $formattedScore;
                                 }
                                 
                                 elseif (trim($row1[0]) == trim($application->post_ume_subject4)) {
                                     $application->post_ume_subject4_score = $formattedScore;
+                                    $score4 = $formattedScore;
                                 }
                                 }
                         //     // Save the changes to the database
+                                if($application->ume_score > 0){
+                                    $application->avg_ume_pume_score = $this->cal_putme_avg($application->ume_score, $score1, $score2,$score3,$score4);
+                                }
                                 $application->save();
                                 array_push($numberToCheck, $uniqueIdentifier);
                         } else {
@@ -132,37 +168,24 @@ class AdminController extends Controller
         }
     }
 
-
-
-    public function update_applicant_putm_score(Request $request){
-
-        $application = Application::where('application_id', $request->app_id)->first();
-        if($application){
-            //
-            //     $application->last_updated_date = date('Y-m-d H:i:s');
-            // //     // Update each column based on different conditions
-            //         if (trim($row1[0]) == trim($application->post_ume_subject1)) {
-            //             $application->post_ume_subject1_score = $formattedScore;
-            //         }
-        
-            //         elseif (trim($row1[0]) == trim($application->post_ume_subject2)) {
-            //             $application->post_ume_subject2_score = $formattedScore;
-            //         }
-    
-            //         elseif (trim($row1[0]) == trim($application->post_ume_subject3)) {
-            //             $application->post_ume_subject3_score = $formattedScore;
-            //         }
-                    
-            //         elseif (trim($row1[0]) == trim($application->post_ume_subject4)) {
-            //             $application->post_ume_subject4_score = $formattedScore;
-            //         }
-               // Save the changes to the database
-                    $application->save();
+    public function cal_putme_avg($ume, $score1, $score2, $score3, $score4){
+        $ume =    (float) $ume;
+        $score1 = (float) $score1;
+        $score2 = (float) $score2;
+        $score3 = (float) $score3;  
+        $score4 = (float) $score4;
+        $sum_putme_score = $score1 +  $score2 + $score3 +  $score4;
+        if( $ume != 0 && $sum_putme_score !=0){
+            $ume_score_in_percent = $ume/8;
+            $putme_score_in_percent = (($sum_putme_score/75) * 50);
+           $ans =   $ume_score_in_percent + $putme_score_in_percent;
+             return number_format($ans, 2, '.', '');
         }
-        else{
-            return  response(['status'=>'failed','message'=>'No application found']);
-        }
+      return 0;
     }
+
+
+    
 
 
 

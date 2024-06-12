@@ -26,6 +26,8 @@ Route::get('get-application-given-screen-batch-id', [ApplicationController::clas
 Route::get('get-programmes', [HelperController::class, 'get_available_programmes_with_properties']); //
 Route::any('load-putm-scores-bulk', [AdminController::class, 'load_putm_scores_bulk']);
 Route::post('send-adms-status', [AdminController::class, 'send_admission_status_to_server']);
+Route::post('update-applicant-scores', [AdminController::class, 'update_applicant_scores']);
+
 
 
 
