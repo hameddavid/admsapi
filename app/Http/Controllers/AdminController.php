@@ -7,6 +7,7 @@ use App\Models\Application;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 
 
 class AdminController extends Controller
@@ -14,24 +15,37 @@ class AdminController extends Controller
     
 
     public function send_admission_status_to_server(Request $request){
+
+        $validate = Validator::make($request->all(),[
+            'FORM_NUMBER'=> 'required', 'SESSION_ADMITTED'=> 'required', 'DATE_ADMITTED'=> 'required', 
+            'NON_REFUNDABLE_DEPOSIT'=> 'required', 'RESUMPTION_DATE'=>'required', 'PROG_CODE'=> 'required',
+             'SCORE'=> 'required', 'ADMITTED'=> 'required','LEVEL'=> 'required', 'DURATION_IN_NUM'=> 'required', 'DURATION_IN_WORD'=> 'required'
+        ]);
+
+        if($validate->fails()){
+            return response()->json(['status_code'=>400, 'msg'=>'All fields are required with the following names: 
+            FORM_NUMBER,SESSION_ADMITTED,DATE_ADMITTED,NON_REFUNDABLE_DEPOSIT,RESUMPTION_DATE,PROG_CODE,SCORE,
+            ADMITTED,LEVEL,DURATION_IN_NUM,DURATION_IN_WORD']);
+        }
+
+        // $array_data = [[
+        //     'FORM_NUMBER' => '18165', 'SESSION_ADMITTED' => '2024/2025', 'DATE_ADMITTED' => '2024-06-05',
+        //     'NON_REFUNDABLE_DEPOSIT' => 'Fifty thousand naira (N50000)', 'RESUMPTION_DATE' => 'Monday, 16th  October 2024',
+        //     'PROG_CODE' => 'CPE', 'SCORE' => '67.5', 'ADMITTED' => 'Y', 'LEVEL' => '300', 'DURATION_IN_NUM' => '3', 
+        //     'DURATION_IN_WORD' => 'THREE'
+        // ]];
+        $array_data = [[ 'FORM_NUMBER' => $request->FORM_NUMBER, 'SESSION_ADMITTED' => $request->SESSION_ADMITTED, 
+        'DATE_ADMITTED' => $request->DATE_ADMITTED, 'NON_REFUNDABLE_DEPOSIT' => $request->NON_REFUNDABLE_DEPOSIT, 
+        'RESUMPTION_DATE' => $request->RESUMPTION_DATE, 'PROG_CODE' => $request->PROG_CODE,
+         'SCORE' => $request->SCORE, 'ADMITTED' => $request->ADMITTED, 'LEVEL' => $request->LEVEL, 
+        'DURATION_IN_NUM' => $request->DURATION_IN_NUM,  'DURATION_IN_WORD' => $request->DURATION_IN_WORD]];
         
-        $http_req = Http::post('https://adms.run.edu.ng/codebehind/front_end_processor?offer_admission=112233',[
-            'request_type' => 'single',
-            'date' => '01-11-2019'
+        $http_req = Http::post('https://adms.run.edu.ng/codebehind/front_end_processor?admission_offer=112233',[
+            'params' => $array_data
         ]);
          if($http_req->successful()){
            return $http_req;
         }
-        
-        // $response = Http::post('http://127.0.0.1:1111/api/register', [
-        //     'name' => $validated['name'],
-        //     'email' => $validated['email'],
-        //     'password' => $validated['password'],
-        // ]);
-
-
-        // if ($response->successful()) {
-            // Registration was successful
 
     }
 
