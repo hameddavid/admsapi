@@ -78,7 +78,7 @@ class AdminController extends Controller
     }
 
     public function load_putm_scores_bulk(Request $request){
-        return "But working here now ...";
+        return $request->putme_scores;
         $request->validate(['putme_scores' => 'required|file|mimes:xlsx,csv', ]);
     //    ini_set('memory_limit', '-1');
     // try {0
