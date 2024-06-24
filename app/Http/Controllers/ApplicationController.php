@@ -37,7 +37,8 @@ class ApplicationController extends Controller
         $request->validated($request->all()); 
         $config = DB::table('t_config')->select('_current_session_FK')->first();
         $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
-        ->where('id_of_screening_schedule', $request->batchId)->get();
+        ->where('id_of_screening_schedule', $request->batchId)
+        ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
         return AllApplicationResource::collection($all_applications);
     }
 }
