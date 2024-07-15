@@ -23,6 +23,7 @@ Route::get('get-applicants-in-session', [ApplicantController::class, 'get_all_ap
 Route::get('get-screening-schedule-in-session', [ApplicationController::class, 'get_screening_schedule_in_session']);
 Route::get('get-all-application-in-session', [ApplicationController::class, 'get_all_application_in_session']);
 Route::get('get-application-given-screen-batch-id', [ApplicationController::class, 'get_application_given_screen_batch_id']);
+Route::get('get-application-given-screen-batch-id-and-category', [ApplicationController::class, 'get_application_given_screen_batch_id_and_category']);
 Route::get('get-programmes', [HelperController::class, 'get_available_programmes_with_properties']); //
 Route::any('load-putm-scores-bulk', [AdminController::class, 'load_putm_scores_bulk']);
 Route::post('send-adms-status', [AdminController::class, 'send_admission_status_to_server']);
