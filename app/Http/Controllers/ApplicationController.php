@@ -47,15 +47,14 @@ class ApplicationController extends Controller
 
     public function get_application_given_screen_batch_id_and_category(Request $request){
        
-        $validate = Validator::make($request->all(),[ 'batchId' => 'required','category' => 'required','jambScore' => 'required']);
+        $validate = Validator::make($request->all(),[ 'batchId' => 'required','category' => 'required']);
         if($validate->fails()){
-            return response()->json(['status_code'=>400, 'msg'=>'All fields are required with the following names: 
-           batchId, category, jambScore']);
+            return response()->json(['status_code'=>400, 'msg'=>'All fields are required with the following names:  batchId, category']);
         }
         $config = DB::table('t_config')->select('_current_session_FK')->first();
-
+        $jamb_cutoff_ = 170;
         if($request->category == 'UME'){
-            if($request->jambScore == 170){
+            if($request->jambScore >= $jamb_cutoff_   && $request->filled("jambScore")){
                 $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                 ->where('id_of_screening_schedule', $request->batchId)
                 ->where('ume_score','>=', $request->jambScore )
@@ -63,18 +62,22 @@ class ApplicationController extends Controller
                 ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
                 return AllApplicationResource::collection($all_applications);
             }
-            else{
-                $config = DB::table('t_config')->select('_current_session_FK')->first();
+            elseif($request->jambScore < $jamb_cutoff_  && $request->filled("jambScore")){
                 $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                 ->where('id_of_screening_schedule', $request->batchId)
-                ->where('ume_score','<', $request->jambScore )
+                ->where('ume_score','<', $jamb_cutoff_  )
+                ->where('app_category', 'UME')
+                ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
+                return AllApplicationResource::collection($all_applications);
+            }else{
+                $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
+                ->where('id_of_screening_schedule', $request->batchId)
                 ->where('app_category', 'UME')
                 ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
                 return AllApplicationResource::collection($all_applications);
             }
         }
         elseif($request->category == 'DIRECT'){
-            $config = DB::table('t_config')->select('_current_session_FK')->first();
             $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
             ->where('id_of_screening_schedule', $request->batchId)
             ->where('app_category', 'DIRECT')
@@ -82,7 +85,6 @@ class ApplicationController extends Controller
             return AllApplicationResource::collection($all_applications);
         }
         elseif($request->category == 'TRANSFER'){
-            $config = DB::table('t_config')->select('_current_session_FK')->first();
             $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
             ->where('id_of_screening_schedule', $request->batchId)
             ->where('app_category', 'TRANSFER')
