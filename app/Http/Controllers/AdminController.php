@@ -103,11 +103,11 @@ class AdminController extends Controller
                                 {
                                 $formattedScore = $this->format_score_from_excel_upload($row1[4]);
 
-                                if(trim($row1[0]) == 'GENERAL MATHEMATICS'){ $formattedScore = $formattedScore+3; }
-                                elseif(trim($row1[0]) == 'SPECIAL MATHEMATICS'){$formattedScore = $formattedScore+3; }
-                                elseif(trim($row1[0]) == 'GENERAL PAPER'){$formattedScore = $formattedScore+2; }
-                                elseif(trim($row1[0]) == 'PHYSICS'){$formattedScore = $formattedScore+2; }
-                                elseif(trim($row1[0]) == 'CHEMISTRY'){$formattedScore = $formattedScore+3; }
+                                // if(trim($row1[0]) == 'GENERAL MATHEMATICS'){ $formattedScore = $formattedScore+3; }
+                                // elseif(trim($row1[0]) == 'SPECIAL MATHEMATICS'){$formattedScore = $formattedScore+3; }
+                                // elseif(trim($row1[0]) == 'GENERAL PAPER'){$formattedScore = $formattedScore+2; }
+                                // elseif(trim($row1[0]) == 'PHYSICS'){$formattedScore = $formattedScore+2; }
+                                // elseif(trim($row1[0]) == 'CHEMISTRY'){$formattedScore = $formattedScore+3; }
                                 $application->last_updated_date = date('Y-m-d H:i:s');
                         //     // Update each column based on different conditions
                                 if (trim($row1[0]) == trim($application->post_ume_subject1)) {
