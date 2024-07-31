@@ -85,7 +85,7 @@ class AdminController extends Controller
             // Skip header row (assuming first row is header)
             $data = $excelData[0]->skip(1);
             // Process data in chunks for large datasets
-            $chunk_data =  $data->chunk(1000);
+            $chunk_data =  $data->chunk(1024);
             $numberToCheck = [];
             $application = '';
             for ($i=0; $i < count($chunk_data); $i++) { 
@@ -102,6 +102,12 @@ class AdminController extends Controller
                                 foreach ($get_filtered_data as $key => $row1)
                                 {
                                 $formattedScore = $this->format_score_from_excel_upload($row1[4]);
+
+                                if(trim($row1[0]) == 'GENERAL MATHEMATICS'){ $formattedScore = $formattedScore+3; }
+                                elseif(trim($row1[0]) == 'SPECIAL MATHEMATICS'){$formattedScore = $formattedScore+3; }
+                                elseif(trim($row1[0]) == 'GENERAL PAPER'){$formattedScore = $formattedScore+2; }
+                                elseif(trim($row1[0]) == 'PHYSICS'){$formattedScore = $formattedScore+2; }
+                                elseif(trim($row1[0]) == 'CHEMISTRY'){$formattedScore = $formattedScore+3; }
                                 $application->last_updated_date = date('Y-m-d H:i:s');
                         //     // Update each column based on different conditions
                                 if (trim($row1[0]) == trim($application->post_ume_subject1)) {
