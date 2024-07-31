@@ -56,12 +56,6 @@ class AdminController extends Controller
             ADMITTED,LEVEL,DURATION_IN_NUM,DURATION_IN_WORD']);
         }
 
-        // $array_data = [[
-        //     'FORM_NUMBER' => '18165', 'SESSION_ADMITTED' => '2024/2025', 'DATE_ADMITTED' => '2024-06-05',
-        //     'NON_REFUNDABLE_DEPOSIT' => 'Fifty thousand naira (N50000)', 'RESUMPTION_DATE' => 'Monday, 16th  October 2024',
-        //     'PROG_CODE' => 'CPE', 'SCORE' => '67.5', 'ADMITTED' => 'Y', 'LEVEL' => '300', 'DURATION_IN_NUM' => '3', 
-        //     'DURATION_IN_WORD' => 'THREE'
-        // ]];
         $array_data = [[ 'FORM_NUMBER' => $request->FORM_NUMBER, 'SESSION_ADMITTED' => $request->SESSION_ADMITTED, 
         'DATE_ADMITTED' => $request->DATE_ADMITTED, 'NON_REFUNDABLE_DEPOSIT' => $request->NON_REFUNDABLE_DEPOSIT, 
         'RESUMPTION_DATE' => $request->RESUMPTION_DATE, 'PROG_CODE' => $request->PROG_CODE,
