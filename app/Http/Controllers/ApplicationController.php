@@ -57,10 +57,31 @@ class ApplicationController extends Controller
         if($request->category == 'UME'){
             if($request->jambScore >= $jamb_cutoff_   && $request->filled("jambScore")){
                 if( $request->filled('batchId')){
+                    if( $request->filled('progID')){
+                        $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
+                        ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
+                        ->where('id_of_screening_schedule', $request->batchId)
+                        ->where('ume_score','>=', $request->jambScore )
+                        ->where('programme_id', $request->progID )
+                        ->where('app_category', 'UME')
+                        ->select('t_applications.*', 't_applicants.date_of_birth')
+                        ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
+                        return AllApplicationResource::collection($all_applications);
+                    }
                     $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                     ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
                     ->where('id_of_screening_schedule', $request->batchId)
                     ->where('ume_score','>=', $request->jambScore )
+                    ->where('app_category', 'UME')
+                    ->select('t_applications.*', 't_applicants.date_of_birth')
+                    ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
+                    return AllApplicationResource::collection($all_applications);
+                }
+                if( $request->filled('progID')){
+                    $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
+                    ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
+                    ->where('ume_score','>=', $request->jambScore )
+                    ->where('programme_id', $request->progID )
                     ->where('app_category', 'UME')
                     ->select('t_applications.*', 't_applicants.date_of_birth')
                     ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
@@ -75,6 +96,16 @@ class ApplicationController extends Controller
                 return AllApplicationResource::collection($all_applications);
             }
             elseif($request->jambScore < $jamb_cutoff_  && $request->filled("jambScore")){
+                if( $request->filled('progID')){
+                    $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
+                    ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
+                    ->where('ume_score','<', $jamb_cutoff_  )
+                    ->where('programme_id', $request->progID )
+                    ->where('app_category', 'UME')
+                    ->select('t_applications.*', 't_applicants.date_of_birth')
+                    ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
+                    return AllApplicationResource::collection($all_applications);
+                }
                 $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                 ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
                 ->where('ume_score','<', $jamb_cutoff_  )
@@ -83,6 +114,15 @@ class ApplicationController extends Controller
                 ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
                 return AllApplicationResource::collection($all_applications);
             }else{
+                if( $request->filled('progID')){
+                    $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
+                    ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
+                    ->where('programme_id', $request->progID )
+                    ->where('app_category', 'UME')
+                    ->select('t_applications.*', 't_applicants.date_of_birth')
+                    ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
+                    return AllApplicationResource::collection($all_applications);
+                }
                 $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                 ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
                 ->where('app_category', 'UME')
@@ -92,6 +132,15 @@ class ApplicationController extends Controller
             }
         }
         elseif($request->category == 'DIRECT'){
+            if( $request->filled('progID')){
+                $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
+                ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
+                ->where('app_category', 'DIRECT')
+                ->where('programme_id', $request->progID )
+                ->select('t_applications.*', 't_applicants.date_of_birth')
+                ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
+                return AllApplicationResource::collection($all_applications);
+            }
             $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
             ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
             ->where('app_category', 'DIRECT')
@@ -100,6 +149,15 @@ class ApplicationController extends Controller
             return AllApplicationResource::collection($all_applications);
         }
         elseif($request->category == 'TRANSFER'){
+            if( $request->filled('progID')){
+                $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
+                ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
+                ->where('app_category', 'TRANSFER')
+                ->where('programme_id', $request->progID )
+                ->select('t_applications.*', 't_applicants.date_of_birth')
+                ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
+                return AllApplicationResource::collection($all_applications);
+            }
             $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
             ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
             ->where('app_category', 'TRANSFER')
