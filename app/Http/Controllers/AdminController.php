@@ -42,6 +42,39 @@ class AdminController extends Controller
 
     }
 
+
+
+
+    public function bulk_send_admission_status_to_server(Request $request){
+
+        // $validate = Validator::make($request->all(),[
+        //     'FORM_NUMBER'=> 'required', 'SESSION_ADMITTED'=> 'required', 'DATE_ADMITTED'=> 'required', 
+        //     'NON_REFUNDABLE_DEPOSIT'=> 'required', 'RESUMPTION_DATE'=>'required', 'PROG_CODE'=> 'required',
+        //      'SCORE'=> 'required', 'ADMITTED'=> 'required','LEVEL'=> 'required', 'DURATION_IN_NUM'=> 'required', 'DURATION_IN_WORD'=> 'required'
+        // ]);
+    
+        // if($validate->fails()){
+        //     return response()->json(['status_code'=>400, 'msg'=>'All fields are required with the following names: 
+        //     FORM_NUMBER,SESSION_ADMITTED,DATE_ADMITTED,NON_REFUNDABLE_DEPOSIT,RESUMPTION_DATE,PROG_CODE,SCORE,
+        //     ADMITTED,LEVEL,DURATION_IN_NUM,DURATION_IN_WORD']);
+        // }
+        dd($request->rowData);
+        $array_data = [[ 'FORM_NUMBER' => $request->FORM_NUMBER, 'SESSION_ADMITTED' => $request->SESSION_ADMITTED, 
+        'DATE_ADMITTED' => $request->DATE_ADMITTED, 'NON_REFUNDABLE_DEPOSIT' => $request->NON_REFUNDABLE_DEPOSIT, 
+        'RESUMPTION_DATE' => $request->RESUMPTION_DATE, 'PROG_CODE' => $request->PROG_CODE,
+         'SCORE' => $request->SCORE, 'ADMITTED' => $request->ADMITTED, 'LEVEL' => $request->LEVEL, 
+        'DURATION_IN_NUM' => $request->DURATION_IN_NUM,  'DURATION_IN_WORD' => $request->DURATION_IN_WORD]];
+        
+        $http_req = Http::post('https://adms.run.edu.ng/codebehind/front_end_processor?admission_offer=112233',[
+            'params' => $array_data
+        ]);
+         if($http_req->successful()){
+           return $http_req;
+        }
+
+    }
+
+
     public function send_admission_status_to_server(Request $request){
 
         $validate = Validator::make($request->all(),[
@@ -49,7 +82,7 @@ class AdminController extends Controller
             'NON_REFUNDABLE_DEPOSIT'=> 'required', 'RESUMPTION_DATE'=>'required', 'PROG_CODE'=> 'required',
              'SCORE'=> 'required', 'ADMITTED'=> 'required','LEVEL'=> 'required', 'DURATION_IN_NUM'=> 'required', 'DURATION_IN_WORD'=> 'required'
         ]);
-
+    
         if($validate->fails()){
             return response()->json(['status_code'=>400, 'msg'=>'All fields are required with the following names: 
             FORM_NUMBER,SESSION_ADMITTED,DATE_ADMITTED,NON_REFUNDABLE_DEPOSIT,RESUMPTION_DATE,PROG_CODE,SCORE,
