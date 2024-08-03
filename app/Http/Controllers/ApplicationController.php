@@ -62,7 +62,7 @@ class ApplicationController extends Controller
                         ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
                         ->where('id_of_screening_schedule', $request->batchId)
                         ->where('ume_score','>=', $request->jambScore )
-                        ->where('programme_id', $request->progID )
+                        ->where('first_choice_programme_FK', $request->progID )
                         ->where('app_category', 'UME')
                         ->select('t_applications.*', 't_applicants.date_of_birth')
                         ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
@@ -81,7 +81,7 @@ class ApplicationController extends Controller
                     $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                     ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
                     ->where('ume_score','>=', $request->jambScore )
-                    ->where('programme_id', $request->progID )
+                    ->where('first_choice_programme_FK', $request->progID )
                     ->where('app_category', 'UME')
                     ->select('t_applications.*', 't_applicants.date_of_birth')
                     ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
@@ -100,7 +100,7 @@ class ApplicationController extends Controller
                     $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                     ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
                     ->where('ume_score','<', $jamb_cutoff_  )
-                    ->where('programme_id', $request->progID )
+                    ->where('first_choice_programme_FK', $request->progID )
                     ->where('app_category', 'UME')
                     ->select('t_applications.*', 't_applicants.date_of_birth')
                     ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
@@ -117,7 +117,7 @@ class ApplicationController extends Controller
                 if( $request->filled('progID')){
                     $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                     ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
-                    ->where('programme_id', $request->progID )
+                    ->where('first_choice_programme_FK', $request->progID )
                     ->where('app_category', 'UME')
                     ->select('t_applications.*', 't_applicants.date_of_birth')
                     ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
@@ -136,7 +136,7 @@ class ApplicationController extends Controller
                 $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                 ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
                 ->where('app_category', 'DIRECT')
-                ->where('programme_id', $request->progID )
+                ->where('first_choice_programme_FK', $request->progID )
                 ->select('t_applications.*', 't_applicants.date_of_birth')
                 ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
                 return AllApplicationResource::collection($all_applications);
@@ -153,7 +153,7 @@ class ApplicationController extends Controller
                 $all_applications = Application::where('session_id_FK', $config->_current_session_FK)
                 ->join('t_applicants', 't_applications.last_updated_by', '=', 't_applicants.jamb_no')
                 ->where('app_category', 'TRANSFER')
-                ->where('programme_id', $request->progID )
+                ->where('first_choice_programme_FK', $request->progID )
                 ->select('t_applications.*', 't_applicants.date_of_birth')
                 ->orderBy('first_choice_programme_FK', 'asc')->orderBy('avg_ume_pume_score', 'desc')->get();
                 return AllApplicationResource::collection($all_applications);
