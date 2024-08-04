@@ -49,6 +49,8 @@ class AdminController extends Controller
 
         $data = array();
         $dataArray = json_decode($$request->rowData, true);
+        dd($dataArray);
+        return 'working...';
         foreach ($dataArray['rowData'] as $row) {
             $data[] =  array('FORM_NUMBER' => $row['FORM_NUMBER'],'SESSION_ADMITTED' => $row['SESSION_ADMITTED'], 
                     'DATE_ADMITTED' => $row['DATE_ADMITTED'], 'NON_REFUNDABLE_DEPOSIT' => $row['NON_REFUNDABLE_DEPOSIT'], 
@@ -58,7 +60,7 @@ class AdminController extends Controller
         }
 
         return  $data;
-        
+
         $array_data = [[ 'FORM_NUMBER' => $request->FORM_NUMBER, 'SESSION_ADMITTED' => $request->SESSION_ADMITTED, 
         'DATE_ADMITTED' => $request->DATE_ADMITTED, 'NON_REFUNDABLE_DEPOSIT' => $request->NON_REFUNDABLE_DEPOSIT, 
         'RESUMPTION_DATE' => $request->RESUMPTION_DATE, 'PROG_CODE' => $request->PROG_CODE,
