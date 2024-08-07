@@ -49,7 +49,7 @@ class AdminController extends Controller
 
     public function bulk_send_admission_status_to_server(Request $request){
         
-        return  $request->applicant;
+        return  $request->rowData;
         $data = array();
         $dataArray = json_decode($request->rowData, true);
      
