@@ -44,7 +44,7 @@ class AdminController extends Controller
 
 
     public function test_bulk_send_admission_status_to_server(Request $request){
-        dd($request->all());
+        return $request->all();
     }
 
     public function bulk_send_admission_status_to_server(Request $request){
