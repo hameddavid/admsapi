@@ -49,13 +49,13 @@ class AdminController extends Controller
 
     public function bulk_send_admission_status_to_server(Request $request){
         
-        return  $request->rowData;
+      
         $data = array();
-        $dataArray = json_decode($request->rowData, true);
+        // $dataArray = json_decode($request->rowData, true);
      
 
-        return 'working...';
-        foreach ($dataArray['rowData'] as $row) {
+    
+        foreach ($request->rowData as $row) {
             $data[] =  array('FORM_NUMBER' => $row['FORM_NUMBER'],'SESSION_ADMITTED' => $row['SESSION_ADMITTED'], 
                     'DATE_ADMITTED' => $row['DATE_ADMITTED'], 'NON_REFUNDABLE_DEPOSIT' => $row['NON_REFUNDABLE_DEPOSIT'], 
                             'RESUMPTION_DATE' => $row['RESUMPTION_DATE'], 'PROG_CODE' => $row['PROG_CODE'], 
