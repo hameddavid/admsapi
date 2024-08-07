@@ -50,29 +50,29 @@ class AdminController extends Controller
     public function bulk_send_admission_status_to_server(Request $request){
         
       
-        $data = array();
+        // $data = array();
         // $dataArray = json_decode($request->rowData, true);
      
 
     
-        foreach ($request->rowData as $row) {
-            $data[] =  array('FORM_NUMBER' => $row['FORM_NUMBER'],'SESSION_ADMITTED' => $row['SESSION_ADMITTED'], 
-                    'DATE_ADMITTED' => $row['DATE_ADMITTED'], 'NON_REFUNDABLE_DEPOSIT' => $row['NON_REFUNDABLE_DEPOSIT'], 
-                            'RESUMPTION_DATE' => $row['RESUMPTION_DATE'], 'PROG_CODE' => $row['PROG_CODE'], 
-                            'SCORE' => $row['SCORE'], 'ADMITTED' => $row['ADMITTED'],  'LEVEL' => $row['LEVEL'], 
-                            'DURATION_IN_NUM' => $row['DURATION_IN_NUM'], 'DURATION_IN_WORD' => $row['DURATION_IN_WORD']);  
-        }
+        // foreach ($request->rowData as $row) {
+        //     $data[] =  array('FORM_NUMBER' => $row['FORM_NUMBER'],'SESSION_ADMITTED' => $row['SESSION_ADMITTED'], 
+        //             'DATE_ADMITTED' => $row['DATE_ADMITTED'], 'NON_REFUNDABLE_DEPOSIT' => $row['NON_REFUNDABLE_DEPOSIT'], 
+        //                     'RESUMPTION_DATE' => $row['RESUMPTION_DATE'], 'PROG_CODE' => $row['PROG_CODE'], 
+        //                     'SCORE' => $row['SCORE'], 'ADMITTED' => $row['ADMITTED'],  'LEVEL' => $row['LEVEL'], 
+        //                     'DURATION_IN_NUM' => $row['DURATION_IN_NUM'], 'DURATION_IN_WORD' => $row['DURATION_IN_WORD']);  
+        // }
 
-        return  $data;
 
-        $array_data = [[ 'FORM_NUMBER' => $request->FORM_NUMBER, 'SESSION_ADMITTED' => $request->SESSION_ADMITTED, 
-        'DATE_ADMITTED' => $request->DATE_ADMITTED, 'NON_REFUNDABLE_DEPOSIT' => $request->NON_REFUNDABLE_DEPOSIT, 
-        'RESUMPTION_DATE' => $request->RESUMPTION_DATE, 'PROG_CODE' => $request->PROG_CODE,
-         'SCORE' => $request->SCORE, 'ADMITTED' => $request->ADMITTED, 'LEVEL' => $request->LEVEL, 
-        'DURATION_IN_NUM' => $request->DURATION_IN_NUM,  'DURATION_IN_WORD' => $request->DURATION_IN_WORD]];
+
+        // $array_data = [[ 'FORM_NUMBER' => $request->FORM_NUMBER, 'SESSION_ADMITTED' => $request->SESSION_ADMITTED, 
+        // 'DATE_ADMITTED' => $request->DATE_ADMITTED, 'NON_REFUNDABLE_DEPOSIT' => $request->NON_REFUNDABLE_DEPOSIT, 
+        // 'RESUMPTION_DATE' => $request->RESUMPTION_DATE, 'PROG_CODE' => $request->PROG_CODE,
+        //  'SCORE' => $request->SCORE, 'ADMITTED' => $request->ADMITTED, 'LEVEL' => $request->LEVEL, 
+        // 'DURATION_IN_NUM' => $request->DURATION_IN_NUM,  'DURATION_IN_WORD' => $request->DURATION_IN_WORD]];
         
         $http_req = Http::post('https://adms.run.edu.ng/codebehind/front_end_processor?admission_offer=112233',[
-            'params' => $array_data
+            'params' => $request->rowData 
         ]);
          if($http_req->successful()){
            return $http_req;
