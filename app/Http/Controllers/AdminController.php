@@ -43,13 +43,16 @@ class AdminController extends Controller
     }
 
 
-
+    public function test_bulk_send_admission_status_to_server(Request $request){
+        return "working ............";
+    }
 
     public function bulk_send_admission_status_to_server(Request $request){
         
         $data = array();
         $dataArray = json_decode($request->rowData, true);
         dd($dataArray);
+
         return 'working...';
         foreach ($dataArray['rowData'] as $row) {
             $data[] =  array('FORM_NUMBER' => $row['FORM_NUMBER'],'SESSION_ADMITTED' => $row['SESSION_ADMITTED'], 
