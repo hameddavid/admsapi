@@ -42,10 +42,41 @@ class AdminController extends Controller
 
     }
 
+    
+    public function bulk_send_admission_status_csv(Request $request){
+        $validate = Validator::make($request->all(),['adms' => 'required|file|mimes:xlsx,csv', ]);
+        if($validate->fails()){
+            return response()->json(['status_code'=>400, 'msg'=>'Excel/CSV file is expected here']);
+        }
+        $admsData = Excel::toCollection(new LoadPUTMEScore, $request->file('adms'), null, \Maatwebsite\Excel\Excel::XLSX);
+        if (!empty($admsData) && $admsData->count() > 0) {
+                $multiArray = [];
+                // Skip header row (assuming first row is header)
+                $header = $admsData[0][0];
+                $data = $admsData[0]->skip(1);
+                // Process data in chunks for large datasets
+                $chunk_data =  $data->chunk(1024);
+                for ($i=0; $i < count($chunk_data); $i++) { 
+                    foreach ($chunk_data[$i] as $key => $row)
+                    {       $sArray = [];
+                            for ($x=0; $x < count($row); $x++) { 
+                                $sArray[$header[$x]] = $row[$x];
+                            }
+                            array_push($multiArray, $sArray);
+                    }
 
-    public function test_bulk_send_admission_status_to_server(Request $request){
-        return $request->all();
+                    
+        }
+        $http_req = Http::post('https://adms.run.edu.ng/codebehind/front_end_processor?admission_offer=112233',[
+            'params' => $multiArray
+        ]);
+         if($http_req->successful()){
+           return $http_req;
+        }
     }
+        return  response(['status'=>'failed','message'=>'Empty excel file sent']);
+    }
+
 
     public function bulk_send_admission_status_to_server(Request $request){
         

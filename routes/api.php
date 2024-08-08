@@ -28,8 +28,8 @@ Route::get('get-programmes', [HelperController::class, 'get_available_programmes
 Route::any('load-putm-scores-bulk', [AdminController::class, 'load_putm_scores_bulk']);
 Route::post('send-adms-status', [AdminController::class, 'send_admission_status_to_server']);
 Route::post('bulk-send-adms-status', [AdminController::class, 'bulk_send_admission_status_to_server']);
+Route::post('bulk-send-admission-status-csv', [AdminController::class, 'bulk_send_admission_status_csv']);
 Route::post('update-applicant-scores', [AdminController::class, 'update_applicant_scores']);
-Route::post('test_bulk_send_admission_status_to_server', [AdminController::class, 'test_bulk_send_admission_status_to_server']);
 
 
 
